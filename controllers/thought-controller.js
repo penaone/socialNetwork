@@ -62,8 +62,9 @@ const thoughtController = {
 
       })
 
-      .then((dbThoughtData) => {
-        if (!dbThoughtData) {
+      .then((dbUserData) => {
+        console.log(dbUserData);
+        if (!dbUserData) {
           res.status(404).json({
             message: "User with that id does not exist"
           });
@@ -76,7 +77,22 @@ const thoughtController = {
         res.json(err);
       });
   },
-
+ // add reaction to thought
+ addReaction({ params, body }, res) {
+  Comment.findOneAndUpdate(
+    { _id: params.thoughtId},
+    { $push: { reaction: body } },
+    { new: true, runValidators: true }
+  )
+    .then(dbUserData => {
+      if (!dbUserData) {
+        res.status(404).json({ message: 'No pizza found with this id!' });
+        return;
+      }
+      res.json(dbUserData);
+    })
+    .catch(err => res.json(err));
+},
   // delete a thought
 
   removeThoughtById({
@@ -118,6 +134,19 @@ const thoughtController = {
         res.sendStatus(400);
       });
   },
+
+  // remove reaction
+  removeReaction({ params }, res) {
+    Comment.findOneAndUpdate(
+      { _id: params.commentId },
+      { $pull: { reactions: { reactionId: params.reactionId } } },
+      { new: true }
+    )
+      .then(dbUserData => res.json(dbUserData))
+      .catch(err => res.json(err));
+  },
+
+
 
   //update thoughts
   updateThoughtById({
