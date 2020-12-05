@@ -8,12 +8,12 @@ const {
 } = require('../../controllers/thought-controller');
 // /api/users
 router
-.route('/')
+.route('/:userId')
 .get(getAllThoughts)
 .post(createThought)
 
 router
-.route('/:id')
+.route('/:thoughtId')
 .get(getThoughtById)
 .put(updateThoughtById)
 .delete(removeThoughtById)
