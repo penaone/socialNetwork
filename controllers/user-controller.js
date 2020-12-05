@@ -1,4 +1,5 @@
 const { User } = require('../models');
+const { db } = require('../models/User');
 
 const userController = {
   // get all Users
@@ -57,11 +58,38 @@ const userController = {
     User.findOneAndDelete({ _id: params.id })
       .then(dbUserData => res.json(dbUserData))
       .catch(err => res.json(err));
-  }
-};
+  },
+
 
 // add Friend
+addFriend({ params, body }, res){
+  User.findOneAndUpdate({ _id: paramas.userId}, { $pull: {friends: params.friendId} }, {new: true})
+  .then(dbUserData => {
+    if(!dbUserData) {
+      res.status(404).json({ message: "User with this ID not found."});
+      return;
+    }
+    res.json(dbUserData);
+  })
+  .catch(err => res.status(400).json(err));
+},
 
-//delete Friend
+//delete Friend 
+  deleteFriend({ params, body }, res){
+        User.findOneAndDelete({ _id: params.userId}, { $pull: {friends: params.friendId} }, {new: true})
+        .then(dbUserData => {
+            if(!dbUserData) {
+                res.status(404).json({ message: "No User found with this id!"});
+                return;
+            }
+            res.json(dbUserData);
+        })
+        .catch(err => res.status(400).json(err));
+    }
+
+
+};
+
+
 
 module.exports = userController;
