@@ -1,7 +1,4 @@
-const {
-  Thoughts,
-  User
-} = require("../models");
+const {Thoughts, User} = require("../models");
 
 const thoughtController = {
   getAllThoughts(req, res) {
@@ -38,30 +35,19 @@ const thoughtController = {
   },
 
   // create a thought
-  createThought({
-    params,
+  createThought({params,
     body
   }, res) {
     Thoughts.create(body)
-      .select("-__v")
+     //.select("-__v")
       .then(({
         _id
       }) => {
         //returns _id from params.userId then $pushes to thoughts
-        returnUser.findOneAndUpdate({
-            _id: params.userId
-          }, {
-            $push: {
-              thoughts: _id
-            }
-          }, {
-            new: true
-          }
-
-        );
+        return User.findOneAndUpdate({_id: params.userId}, {$push: {thoughts: _id}}, {new: true});
 
       })
-
+ 
       .then((dbUserData) => {
         console.log(dbUserData);
         if (!dbUserData) {
@@ -70,7 +56,7 @@ const thoughtController = {
           });
           return;
         }
-        res.json(dbThoughtData);
+        res.json(dbUserData);
       })
       .catch((err) => {
         console.log(err);
@@ -78,15 +64,15 @@ const thoughtController = {
       });
   },
  // add reaction to thought
- addReaction({ params, body }, res) {
-  Comment.findOneAndUpdate(
+ createReaction({ params, body }, res) {
+  Thoughts.findOneAndUpdate(
     { _id: params.thoughtId},
     { $push: { reaction: body } },
     { new: true, runValidators: true }
   )
     .then(dbUserData => {
       if (!dbUserData) {
-        res.status(404).json({ message: 'No pizza found with this id!' });
+        res.status(404).json({ message: 'No User found with this id!' });
         return;
       }
       res.json(dbUserData);
@@ -103,8 +89,7 @@ const thoughtController = {
       })
       .select("-__v")
       .then((deletedThought) => {
-        if (!deletedThought) {
-          return res
+        if (!deletedThought) {return res
             .status(404)
             .json({
               message: "Thought with that ID does not exist"
@@ -137,7 +122,7 @@ const thoughtController = {
 
   // remove reaction
   removeReaction({ params }, res) {
-    Comment.findOneAndUpdate(
+    Thoughts.findOneAndUpdate(
       { _id: params.commentId },
       { $pull: { reactions: { reactionId: params.reactionId } } },
       { new: true }
@@ -145,8 +130,6 @@ const thoughtController = {
       .then(dbUserData => res.json(dbUserData))
       .catch(err => res.json(err));
   },
-
-
 
   //update thoughts
   updateThoughtById({
