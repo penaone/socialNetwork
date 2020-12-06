@@ -65,6 +65,7 @@ const thoughtController = {
   },
  // add reaction to thought
  createReaction({ params, body }, res) {
+   console.log("body: ", body);
   Thoughts.findOneAndUpdate(
     { _id: params.thoughtId},
     { $push: { reaction: body } },
@@ -75,6 +76,7 @@ const thoughtController = {
         res.status(404).json({ message: 'No User found with this id!' });
         return;
       }
+      console.log("dbUserData: ", dbUserData);
       res.json(dbUserData);
     })
     .catch(err => res.json(err));
