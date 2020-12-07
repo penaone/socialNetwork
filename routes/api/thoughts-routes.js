@@ -22,7 +22,7 @@ router
 
 // /api/thoughts/:thoughtId/reactions>
 router
-.route('/:userId/:thoughtId/reactions')
+.route('/:userId/:thoughtId/reaction')
 .put(createReaction)
 
 router
