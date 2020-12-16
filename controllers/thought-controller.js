@@ -91,6 +91,7 @@ const thoughtController = {
       })
       .select("-__v")
       .then((deletedThought) => {
+        
         if (!deletedThought) {return res
             .status(404)
             .json({
@@ -98,7 +99,7 @@ const thoughtController = {
             });
         }
         return User.findOneAndUpdate({
-          _id: params.userId
+          thoughts: params.thoughtId
         }, {
           $pull: {
             thoughts: params.thoughtId

@@ -20,13 +20,13 @@ router
 .put(updateThoughtById)
 .delete(removeThoughtById)
 
-// /api/thoughts/:thoughtId/reactions>
+// /api/thoughts/:thoughtId/reaction>
 router
 .route('/:userId/:thoughtId/reaction')
 .put(createReaction)
 
 router
-.route('/:userId/:thoughtId/:reactionId')
+.route('/:userId/:thoughtId/reaction/:reactionId')
 .delete(removeReaction)
 
 
