@@ -43,7 +43,7 @@ Stephen Pena
 No tests required. To test this code a user needs to download Insomnia or Postman and test the many routes required to create friends, thoughts and reactions.
 
 ## Video Link
-https://courses.bootcampspot.com/accounts/1/external_tools/33?launch_type=global_navigation
+https://bootcampspot.instructuremedia.com/embed/8310ee70-2c68-43de-a58b-990cf118b4ed
 
 
 ## Questions
